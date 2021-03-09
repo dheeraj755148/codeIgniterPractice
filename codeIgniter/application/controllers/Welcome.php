@@ -9,14 +9,28 @@ class Welcome extends CI_Controller
 		phpinfo();
 	}
 	public function Dashboard()
-	{	
-		$this->load->view('header');
-		$this->load->view('firstAttempt'); /* Loading view */
-		$this->load->view('footer');
-		
+	{
+		$data = array(
+			array(
+				'name' => 'dheeraj',
+				'age' => '22',
+				'gender' => 'male',
+			),
+			array(
+				'name' => 'Raj',
+				'age' => '21',
+				'gender' => 'male',
+			)
+		);
+
+		/* $this->load->view('firstAttempt', ['data' => $data]); */ /* Loading view with array */
+		$this->load->view('firstAttempt');
 	}
-	public function Argument($name)
-	{		/* Argument testing */
-		echo $name;
+	public function adminRegister(){
+		$this->load->view('adminRegister');
+	}
+
+	public function adminLogin(){
+		echo 'login';
 	}
 }
