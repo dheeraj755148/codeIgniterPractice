@@ -27,7 +27,9 @@ class Welcome extends CI_Controller
 		$this->load->view('firstAttempt');
 	}
 	public function adminRegister(){
-		$this->load->view('adminRegister');
+		$this->load->model('query');
+		$roles = $this->query->getRoles();
+		$this->load->view('adminRegister',['roles'=>$roles]);
 	}
 
 	public function adminLogin(){
