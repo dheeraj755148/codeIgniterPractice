@@ -26,13 +26,33 @@ class Welcome extends CI_Controller
 		/* $this->load->view('firstAttempt', ['data' => $data]); */ /* Loading view with array */
 		$this->load->view('firstAttempt');
 	}
-	public function adminRegister(){
+	public function adminRegister()
+	{
 		$this->load->model('query');
 		$roles = $this->query->getRoles();
-		$this->load->view('adminRegister',['roles'=>$roles]);
+		$this->load->view('adminRegister', ['roles' => $roles]);
 	}
 
-	public function adminLogin(){
+	public function adminLogin()
+	{
 		echo 'login';
+	}
+
+	public function adminSignup()
+	{
+		$this->form_validation->set_rules('username', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('gender', 'Gender', 'required');
+		$this->form_validation->set_rules('role_id', 'Role', 'required');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('confpwd', 'Password Confirmation', 'required');
+		
+		if($this->form_validation->run()){
+			echo "validated";
+		}
+		else{
+			$this->adminRegister();
+		}
+	
 	}
 }
