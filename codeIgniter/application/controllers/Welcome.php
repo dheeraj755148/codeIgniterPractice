@@ -35,7 +35,7 @@ class Welcome extends CI_Controller
 
 	public function adminLogin()
 	{
-		echo 'login';
+		$this->load->view('adminLogin');
 	}
 
 	public function adminSignup()
@@ -46,13 +46,55 @@ class Welcome extends CI_Controller
 		$this->form_validation->set_rules('role_id', 'Role', 'required');
 		$this->form_validation->set_rules('password', 'Password', 'required');
 		$this->form_validation->set_rules('confpwd', 'Password Confirmation', 'required');
-		
-		if($this->form_validation->run()){
-			echo "validated";
-		}
-		else{
+
+		if ($this->form_validation->run()) {
+			$data = $this->input->post();
+			$data['password'] = sha1($this->input->post('password'));
+			$data['confpwd'] = sha1($this->input->post('confpwd'));
+
+			$this->load->model('query');
+			if ($this->query->insertData($data)) {
+				$this->session->set_flashData('message', 'Admin added');
+			} else {
+				$this->session->set_flashData('message', 'Failed to add admin');
+			}
+			redirect('welcome/adminRegister');
+		} else {
 			$this->adminRegister();
 		}
-	
+	}
+
+
+	public function adminSignin()
+	{
+
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+
+
+		if ($this->form_validation->run()) {
+			$email = $this->input->post('email');
+			$password = sha1($this->input->post('password'));
+
+			$this->load->model('query');
+			$userdata = $this->query->adminExist($email, $password);
+			if($userdata){
+				$sessionData =[
+					'user_id'=> $userdata->user_id,
+					'username'=> $userdata->username,
+					'email'=> $userdata->email,
+					'role_id'=> $userdata->role_id,
+
+				];
+				$this->session->set_userData($sessionData);
+				return redirect("admin/dashboard");
+			}
+			else{
+				$this->session->set_flashData('message', 'No user in database');
+				return redirect("welcome/adminLogin");
+			}
+		} else {
+			$this->adminLogin();
+		}
 	}
 }

@@ -9,5 +9,16 @@
                  return($roles->result());
             }
         }
+
+        public function insertData($data){
+            return $this->db->insert('users',$data);
+        }
+
+
+        public function adminExist($email, $password){
+            $check = $this->db->where(['email'=>$email, 'password'=>$password])->get('users');
+            if($check->num_rows()>0){
+                return $check->row();
+            }
+        }
     }
-?>
