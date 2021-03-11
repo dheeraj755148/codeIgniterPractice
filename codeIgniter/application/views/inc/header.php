@@ -22,14 +22,15 @@
                     More info
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <?php $user_id = $this->session->userData('user_id'); ?>
+                    <a>
+                        <?php echo anchor('welcome/logout', 'Logout') ?>
+                    </a>
                 </div>
             </li>
     </div>
 </nav>
 <script src="<?php echo base_url('assets/js/jquery.js') ?>"></script>
 <script src="<?php echo base_url('assets/js/bootstrap.js') ?>"></script>
+
 </html>

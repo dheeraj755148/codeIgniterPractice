@@ -35,6 +35,9 @@ class Welcome extends CI_Controller
 
 	public function adminLogin()
 	{
+		if ($this->session->userData('user_id')) {
+			return redirect('admin/dashboard');
+		}
 		$this->load->view('adminLogin');
 	}
 
@@ -78,23 +81,27 @@ class Welcome extends CI_Controller
 
 			$this->load->model('query');
 			$userdata = $this->query->adminExist($email, $password);
-			if($userdata){
-				$sessionData =[
-					'user_id'=> $userdata->user_id,
-					'username'=> $userdata->username,
-					'email'=> $userdata->email,
-					'role_id'=> $userdata->role_id,
+			if ($userdata) {
+				$sessionData = [
+					'user_id' => $userdata->user_id,
+					'username' => $userdata->username,
+					'email' => $userdata->email,
+					'role_id' => $userdata->role_id,
 
 				];
 				$this->session->set_userData($sessionData);
 				return redirect("admin/dashboard");
-			}
-			else{
+			} else {
 				$this->session->set_flashData('message', 'No user in database');
 				return redirect("welcome/adminLogin");
 			}
 		} else {
 			$this->adminLogin();
 		}
+	}
+	public function logout()
+	{
+		$this->session->unset_userData('user_id');
+		return redirect('welcome/adminLogin');
 	}
 }

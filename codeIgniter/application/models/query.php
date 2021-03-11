@@ -21,4 +21,17 @@
                 return $check->row();
             }
         }
+
+        public function insertCollege($data){
+            return $this->db->insert('college',$data);
+        }
+
+        public function getColleges(){
+            $colleges = $this->db->get('college');
+            
+            if($colleges -> num_rows() >0){
+                 $colleges->result();
+                 return($colleges->result());
+            }
+        }
     }
